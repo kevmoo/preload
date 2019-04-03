@@ -1,0 +1,14 @@
+# Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
+targets:
+  $default:
+    builders:
+      build_version:
+        enabled: true
+
+builders:
+  preload:
+    import: "package:preload/builder.dart"
+    builder_factories: ["buildPreload"]
+    build_extensions: {"web/main.template.html": ["web.main.html"]}
+    build_to: source
+    auto_apply: dependents
