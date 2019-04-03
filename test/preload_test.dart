@@ -27,6 +27,8 @@ void main() {
 <html>
 <head>
 
+
+  <script defer type="application/javascript" src="main.dart.js"></script>
 </head>
 </html>
 ''',
@@ -54,6 +56,8 @@ void main() {
   <link rel="preload" href="assets/image.jpg" as="fetch" crossorigin>
   <link rel="preload" href="assets/json.json" as="fetch" crossorigin>
   <link rel="preload" href="packages/pkg/assets/json.json" as="fetch" crossorigin>
+
+  <script defer type="application/javascript" src="main.dart.js"></script>
 </head>
 </html>
 ''',
@@ -84,6 +88,8 @@ void main() {
   <link rel="preload" href="assets/image.jpg" as="fetch" crossorigin>
   <link rel="preload" href="assets/json.json" as="fetch" crossorigin>
   <link rel="preload" href="packages/pkg/assets/json.json" as="fetch" crossorigin>
+
+  <script defer type="application/javascript" src="main.dart.js"></script>
 </head>
 </html>
 ''',
@@ -111,6 +117,8 @@ void main() {
 <head>
   <link rel="preload" href="assets/txt.txt" as="fetch" crossorigin>
   <link rel="preload" href="packages/pkg/assets/txt.txt" as="fetch" crossorigin>
+
+  <script defer type="application/javascript" src="main.dart.js"></script>
 </head>
 </html>
 ''',
@@ -156,6 +164,8 @@ const _htmlInputWithPreloadPlaceholder = r'''
 <html>
 <head>
   <!--PRELOAD-HERE-->
+
+  <script defer type="application/javascript" src="main.dart.js"></script>
 </head>
 </html>
 ''';
