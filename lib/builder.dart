@@ -1,6 +1,12 @@
-// Copyright (c) 2019, the Dart project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
+/// Configuration for using `package:build`-compatible build systems.
+///
+/// This library is **not** intended to be imported by typical end-users unless
+/// you are creating a custom compilation pipeline.
+///
+/// See [package:build_runner](https://pub.dartlang.org/packages/build_runner)
+/// for more information.
+library builder;
+
 import 'dart:async';
 
 import 'package:build/build.dart';
