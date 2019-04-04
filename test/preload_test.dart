@@ -76,6 +76,7 @@ void main() {
         'pkg|web/assets/font.woff': '// some font',
         'pkg|web/assets/json.json': '// some json',
         'pkg|lib/assets/json.json': '// some json',
+        'pkg|lib/.DS_Store': '// some dot file',
       },
       outputs: {
         'pkg|web/index.html': r'''
@@ -143,6 +144,7 @@ void main() {
         'pkg|web/assets/json.json': '// some json',
         'pkg|web/assets/txt.txt': '// some txt',
         'pkg|lib/assets/json.json': '// some json, in lib',
+        'pkg|lib/.DS_Store': '// some "." file',
       },
       onLog: logEntryies.add,
       outputs: {
@@ -166,6 +168,7 @@ void main() {
     expect(logEntryies.single.message, r'''
 These items where excluded when generating preload tags:
   ASSET                   REASON
+  lib/.DS_Store           starts with "."
   web/assets/txt.txt      excluded by glob "**/*.txt"
   web/index.template.html ends with ".html"
 ''');

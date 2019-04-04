@@ -32,6 +32,10 @@ class PreloadBuilder extends Builder {
     }
 
     Iterable<_PreloadEntry> assetIdToPreloadEntry(AssetId assetId) sync* {
+      if (assetId.pathSegments.last.startsWith('.')) {
+        logSkipReason(assetId, 'starts with "."');
+        return;
+      }
       for (var excludeEndsWith in _excludeEndsWith) {
         if (assetId.path.endsWith(excludeEndsWith)) {
           logSkipReason(assetId, 'ends with "$excludeEndsWith"');
@@ -113,7 +117,7 @@ These items where excluded when generating preload tags:
 
     final outputContent = templateContent.replaceFirstMapped(
       RegExp('([\\t ]*)(${RegExp.escape(_preloadPlacholder)})'),
-          (match) {
+      (match) {
         final indent = match[1];
         return preloads.map((e) => '$indent$e').join('\n');
       },
