@@ -1,10 +1,38 @@
 import 'package:build/build.dart';
 import 'package:build_test/build_test.dart';
+import 'package:glob/glob.dart';
 import 'package:logging/logging.dart';
 import 'package:preload/builder.dart';
+import 'package:preload/src/preload_builder.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('builder config', () {
+    test('defaults', () {
+      final builder = buildPreload() as PreloadBuilder;
+      expect(builder.debug, isFalse);
+      expect(builder.excludeGlobs, isEmpty);
+      expect(builder.includeGlobs, hasLength(2));
+      expect(builder.includeGlobs,
+          contains(isA<Glob>().having((e) => e.pattern, 'pattern', 'web/**')));
+      expect(builder.includeGlobs,
+          contains(isA<Glob>().having((e) => e.pattern, 'pattern', 'lib/**')));
+    });
+
+    test('configured', () {
+      final builder = buildPreload(const BuilderOptions({
+        'debug': true,
+        'exclude': ['foo.js'],
+        'include': [],
+      })) as PreloadBuilder;
+      expect(builder.debug, isTrue);
+      expect(builder.includeGlobs, isEmpty);
+      expect(builder.excludeGlobs, hasLength(1));
+      expect(builder.excludeGlobs.single,
+          isA<Glob>().having((e) => e.pattern, 'pattern', 'foo.js'));
+    });
+  });
+
   test('no template section', () async {
     await testBuilder(
       buildPreload(),
