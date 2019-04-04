@@ -6,3 +6,4 @@ builders:
     build_extensions: {"web/index.template.html": ["web/index.html"]}
     build_to: source
     auto_apply: dependents
+    required_inputs: ['.dart.js']
