@@ -2,6 +2,7 @@
 
 - Make sure to run after `.dart.js` files are generated.
 - Add `debug` option to print out all files that are excluded and why.
+- Exclude files beginning with `.`.
 
 ## 1.0.1
 
