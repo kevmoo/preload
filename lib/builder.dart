@@ -32,7 +32,16 @@ Builder buildPreload([BuilderOptions options]) {
         .toList();
   }
 
-  return _WebBuilder(excludeGlobs: excludes, includeGlobs: includes);
+  bool debug;
+  if (options.config.containsKey('debug')) {
+    debug = options.config['debug'] as bool;
+  }
+
+  return _WebBuilder(
+    excludeGlobs: excludes,
+    includeGlobs: includes,
+    debug: debug,
+  );
 }
 
 const _preloadPlacholder = '<!--PRELOAD-HERE-->';
@@ -40,30 +49,93 @@ const _preloadPlacholder = '<!--PRELOAD-HERE-->';
 class _WebBuilder extends Builder {
   final List<Glob> _includeGlobs;
   final List<Glob> _excludeGlobs;
+  final bool _debug;
 
   _WebBuilder({
     Iterable<Glob> excludeGlobs,
     Iterable<Glob> includeGlobs,
-  })  : _excludeGlobs = List<Glob>.unmodifiable(excludeGlobs ?? const <Glob>[]),
+    bool debug,
+  })  : _debug = debug ?? false,
+        _excludeGlobs = List<Glob>.unmodifiable(excludeGlobs ?? const <Glob>[]),
         _includeGlobs = List<Glob>.unmodifiable(
             includeGlobs ?? <Glob>[Glob('web/**'), Glob('lib/**')]);
 
-  Stream<_PreloadEntry> _matchingAssets(BuildStep buildStep) async* {
-    for (var glob in _includeGlobs) {
-      yield* buildStep.findAssets(glob).where((assetId) {
-        for (var exclude in _excludeGlobs) {
-          if (exclude.matches(assetId.path)) {
-            return false;
-          }
-        }
-        return true;
-      }).expand(_process);
-    }
-  }
-
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    final preloads = await _matchingAssets(buildStep).toList();
+    List<MapEntry<String, String>> debugLines;
+    if (_debug) {
+      debugLines = <MapEntry<String, String>>[];
+    }
+
+    void logSkipReason(AssetId assetId, String reason) {
+      debugLines?.add(MapEntry(assetId.path, reason));
+    }
+
+    Iterable<_PreloadEntry> assetIdToPreloadEntry(AssetId assetId) sync* {
+      for (var excludeEndsWith in _excludeEndsWith) {
+        if (assetId.path.endsWith(excludeEndsWith)) {
+          logSkipReason(assetId, 'ends with "$excludeEndsWith"');
+          return;
+        }
+      }
+
+      for (var excludeContains in _excludeContains) {
+        if (assetId.path.contains(excludeContains)) {
+          logSkipReason(assetId, 'contains "$excludeContains"');
+          return;
+        }
+      }
+
+      var segments = assetId.pathSegments;
+
+      if (segments[0] == 'web') {
+        segments = segments.skip(1).toList();
+      } else if (segments[0] == 'lib') {
+        segments = ['packages', assetId.package]..addAll(segments.skip(1));
+      } else {
+        throw UnimplementedError('not ready to party on `$segments` yet.');
+      }
+
+      final assetType = _asValue(segments.last);
+      yield _PreloadEntry(p.url.joinAll(segments), assetType);
+    }
+
+    Stream<_PreloadEntry> matchingAssets(BuildStep buildStep) async* {
+      for (var glob in _includeGlobs) {
+        yield* buildStep.findAssets(glob).where((assetId) {
+          for (var exclude in _excludeGlobs) {
+            if (exclude.matches(assetId.path)) {
+              logSkipReason(assetId, 'excluded by glob "$exclude"');
+              return false;
+            }
+          }
+          return true;
+        }).expand(assetIdToPreloadEntry);
+      }
+    }
+
+    final preloads = await matchingAssets(buildStep).toList();
+
+    if (debugLines?.isNotEmpty ?? false) {
+      final longest = debugLines.fold<int>(0, (longest, value) {
+        if (value.key.length > longest) {
+          longest = value.key.length;
+        }
+        return longest;
+      });
+
+      debugLines.sort((a, b) => a.key.compareTo(b.key));
+
+      final linesString = debugLines
+          .map((e) => '${e.key.padRight(longest)} ${e.value}')
+          .join('\n  ');
+
+      log.warning('''
+These items where excluded when generating preload tags:
+  ${"ASSET".padRight(longest)} REASON
+  $linesString
+''');
+    }
 
     final templateContent = await buildStep.readAsString(buildStep.inputId);
 
@@ -119,36 +191,6 @@ const _excludeEndsWith = [
   '.ico',
   '.module.library',
 ];
-
-Iterable<_PreloadEntry> _process(AssetId assetId) sync* {
-  for (var excludeEndsWith in _excludeEndsWith) {
-    if (assetId.path.endsWith(excludeEndsWith)) {
-      return;
-    }
-  }
-
-  for (var excludeContains in _excludeContains) {
-    if (assetId.path.contains(excludeContains)) {
-      return;
-    }
-  }
-
-  var segments = assetId.pathSegments;
-
-  if (segments[0] == 'web') {
-    segments = segments.skip(1).toList();
-  } else if (segments[0] == 'lib') {
-    segments = ['packages', assetId.package]..addAll(segments.skip(1));
-  } else {
-    throw UnimplementedError('not ready to party on `$segments` yet.');
-  }
-
-  final assetType = _asValue(segments.last);
-
-  if (assetType != null) {
-    yield _PreloadEntry(p.url.joinAll(segments), assetType);
-  }
-}
 
 String _asValue(String fileName) {
   final extension = p.extension(fileName);
