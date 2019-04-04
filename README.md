@@ -47,3 +47,16 @@
     </head>
     </html>
     ```
+
+## `build.yaml` configuration
+
+The builder also supports configuration values. Below are the supported keys
+along with their defaults.
+
+```yaml
+debug: false
+exclude: []
+include:
+- 'web/**'
+- 'lib/**'
+```
