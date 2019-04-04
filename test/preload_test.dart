@@ -1,5 +1,6 @@
 import 'package:build/build.dart';
 import 'package:build_test/build_test.dart';
+import 'package:logging/logging.dart';
 import 'package:preload/builder.dart';
 import 'package:test/test.dart';
 
@@ -97,6 +98,49 @@ void main() {
 ''',
       },
     );
+  });
+
+  test('with debug enabled in options', () async {
+    final logEntryies = <LogRecord>[];
+    await testBuilder(
+      buildPreload(const BuilderOptions({
+        'exclude': ['**/*.txt'],
+        'debug': true,
+      })),
+      {
+        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
+        'pkg|web/main.dart.js': '// some js',
+        'pkg|web/assets/image.jpg': '// some jpg',
+        'pkg|web/assets/font.ttf': '// some font',
+        'pkg|web/assets/json.json': '// some json',
+        'pkg|web/assets/txt.txt': '// some txt',
+        'pkg|lib/assets/json.json': '// some json, in lib',
+      },
+      onLog: logEntryies.add,
+      outputs: {
+        'pkg|web/index.html': r'''
+<html>
+<head>
+  <link rel="preload" href="main.dart.js" as="script">
+  <link rel="preload" href="assets/font.ttf" as="font" crossorigin>
+  <link rel="preload" href="assets/image.jpg" as="fetch" crossorigin>
+  <link rel="preload" href="assets/json.json" as="fetch" crossorigin>
+  <link rel="preload" href="packages/pkg/assets/json.json" as="fetch" crossorigin>
+
+  <script defer type="application/javascript" src="main.dart.js"></script>
+</head>
+</html>
+''',
+      },
+    );
+
+    expect(logEntryies, hasLength(1));
+    expect(logEntryies.single.message, r'''
+These items where excluded when generating preload tags:
+  ASSET                   REASON
+  web/assets/txt.txt      excluded by glob "**/*.txt"
+  web/index.template.html ends with ".html"
+''');
   });
 
   test('with includes', () async {
