@@ -1,7 +1,7 @@
 name: preload
 description: >-
   Automatically generate preload tags for your Dart web application.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/kevmoo/preload
 author: Kevin Moore <kevmoo@google.com>
 

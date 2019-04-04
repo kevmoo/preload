@@ -156,6 +156,7 @@ String _asValue(String fileName) {
     case '.js':
       return 'script';
     case '.ttf':
+    case '.woff':
       return 'font';
     default:
       return 'fetch';
