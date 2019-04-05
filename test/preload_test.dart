@@ -203,6 +203,35 @@ These items where excluded when generating preload tags:
     );
   });
 
+  test('overlapping includes should not duplicate tags', () async {
+    await testBuilder(
+      buildPreload(const BuilderOptions({
+        'include': ['**/*.txt', '**/*.txt'],
+      })),
+      {
+        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
+        'pkg|web/main.dart.js': '// some js',
+        'pkg|web/assets/image.jpg': '// some jpg',
+        'pkg|web/assets/font.ttf': '// some font',
+        'pkg|web/assets/json.json': '// some json',
+        'pkg|web/assets/txt.txt': '// some txt',
+        'pkg|lib/assets/txt.txt': '// some txt, in lib',
+      },
+      outputs: {
+        'pkg|web/index.html': r'''
+<html>
+<head>
+  <link rel="preload" href="assets/txt.txt" as="fetch" crossorigin>
+  <link rel="preload" href="packages/pkg/assets/txt.txt" as="fetch" crossorigin>
+
+  <script defer type="application/javascript" src="main.dart.js"></script>
+</head>
+</html>
+''',
+      },
+    );
+  });
+
   test('with custom indent', () async {
     await testBuilder(
       buildPreload(),

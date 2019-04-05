@@ -64,21 +64,24 @@ class PreloadBuilder extends Builder {
       yield _PreloadEntry(p.url.joinAll(segments), assetType);
     }
 
-    Stream<_PreloadEntry> matchingAssets(BuildStep buildStep) async* {
-      for (var glob in includeGlobs) {
-        yield* buildStep.findAssets(glob).where((assetId) {
-          for (var exclude in excludeGlobs) {
-            if (exclude.matches(assetId.path)) {
-              logSkipReason(assetId, 'excluded by glob "$exclude"');
-              return false;
-            }
-          }
-          return true;
-        }).expand(assetIdToPreloadEntry);
+    bool include(AssetId assetId) {
+      for (var exclude in excludeGlobs) {
+        if (exclude.matches(assetId.path)) {
+          logSkipReason(assetId, 'excluded by glob "$exclude"');
+          return false;
+        }
+      }
+      return true;
+    }
+
+    final preloadSet = <_PreloadEntry>{};
+    for (var glob in includeGlobs) {
+      await for (var assetId in buildStep.findAssets(glob).where(include)) {
+        preloadSet.addAll(assetIdToPreloadEntry(assetId));
       }
     }
 
-    final preloads = await matchingAssets(buildStep).toList();
+    final preloads = preloadSet.toList()..sort();
 
     if (debugLines?.isNotEmpty ?? false) {
       final longest = debugLines.fold<int>(0, (longest, value) {
@@ -102,18 +105,6 @@ These items where excluded when generating preload tags:
     }
 
     final templateContent = await buildStep.readAsString(buildStep.inputId);
-
-    preloads.sort((a, b) {
-      final aSilly = (a.asValue == 'script') ? 0 : 1;
-      final bSilly = (b.asValue == 'script') ? 0 : 1;
-
-      var value = aSilly.compareTo(bSilly);
-
-      if (value == 0) {
-        value = a.href.compareTo(b.href);
-      }
-      return value;
-    });
 
     final outputContent = templateContent.replaceFirstMapped(
       RegExp('([\\t ]*)(${RegExp.escape(_preloadPlacholder)})'),
@@ -169,7 +160,7 @@ String _asValue(String fileName) {
   }
 }
 
-class _PreloadEntry {
+class _PreloadEntry implements Comparable<_PreloadEntry> {
   final String href;
   final String asValue;
 
@@ -185,4 +176,24 @@ class _PreloadEntry {
   @override
   String toString() =>
       '<link rel="preload" href="$href" as="$asValue"$_crossOrigin>';
+
+  @override
+  bool operator ==(Object other) =>
+      other is _PreloadEntry && other.href == href && other.asValue == asValue;
+
+  @override
+  int get hashCode => href.hashCode ^ asValue.hashCode;
+
+  @override
+  int compareTo(_PreloadEntry other) {
+    final aSilly = (asValue == 'script') ? 0 : 1;
+    final bSilly = (other.asValue == 'script') ? 0 : 1;
+
+    var value = aSilly.compareTo(bSilly);
+
+    if (value == 0) {
+      value = href.compareTo(other.href);
+    }
+    return value;
+  }
 }

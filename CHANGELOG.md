@@ -1,3 +1,8 @@
+## 1.1.1
+
+- Don't emit the same tag twice if there are `include` globs with overlapping
+  matches.
+
 ## 1.1.0
 
 - Make sure to run after `.dart.js` files are generated.
