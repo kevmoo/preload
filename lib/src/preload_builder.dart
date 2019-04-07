@@ -142,9 +142,11 @@ const _excludeEndsWith = [
   '.dart',
   '.dart.bootstrap.js',
   '.digests',
+  '.g.part',
   '.html',
   '.ico',
   '.module.library',
+  '.ng_placeholder',
 ];
 
 String _asValue(String fileName) {

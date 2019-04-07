@@ -1,3 +1,8 @@
+## 1.1.2
+
+- Exclude assets that end with `.g.part` (from `package:source_gen`).
+- Exclude assets that end with `.ng_placeholder` (from `package:angular`).
+
 ## 1.1.1
 
 - Don't emit the same tag twice if there are `include` globs with overlapping
