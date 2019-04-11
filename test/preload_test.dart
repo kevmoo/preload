@@ -74,6 +74,7 @@ void main() {
         'pkg|web/assets/image.jpg': '// some jpg',
         'pkg|web/assets/font.ttf': '// some font',
         'pkg|web/assets/font.woff': '// some font',
+        'pkg|web/assets/font.otf': '// some font',
         'pkg|web/assets/json.json': '// some json',
         'pkg|lib/assets/json.json': '// some json',
         'pkg|lib/.DS_Store': '// some dot file',
@@ -83,6 +84,7 @@ void main() {
 <html>
 <head>
   <link rel="preload" href="main.dart.js" as="script">
+  <link rel="preload" href="assets/font.otf" as="font" crossorigin>
   <link rel="preload" href="assets/font.ttf" as="font" crossorigin>
   <link rel="preload" href="assets/font.woff" as="font" crossorigin>
   <link rel="preload" href="assets/image.jpg" as="fetch" crossorigin>

@@ -1,3 +1,7 @@
+## 1.1.3
+
+- Preload `.otf` files as `"font"`. 
+
 ## 1.1.2
 
 - Exclude assets that end with `.g.part` (from `package:source_gen`).

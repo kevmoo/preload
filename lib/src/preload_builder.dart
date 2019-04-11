@@ -154,6 +154,7 @@ String _asValue(String fileName) {
   switch (extension) {
     case '.js':
       return 'script';
+    case '.otf':
     case '.ttf':
     case '.woff':
       return 'font';
