@@ -1,3 +1,8 @@
+## 1.1.4
+
+- Exclude assets that end with `.dart.js.tar.gz`
+  (`package:build_web_compilers` implementation).
+
 ## 1.1.3
 
 - Preload `.otf` files as `"font"`. 

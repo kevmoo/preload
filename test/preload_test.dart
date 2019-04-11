@@ -69,15 +69,16 @@ void main() {
     await testBuilder(
       buildPreload(),
       {
-        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
-        'pkg|web/main.dart.js': '// some js',
-        'pkg|web/assets/image.jpg': '// some jpg',
+        'pkg|lib/.DS_Store': '// some dot file',
+        'pkg|lib/assets/json.json': '// some json',
+        'pkg|web/"main.dart.js.tar.gz': '// some tar.gz file',
+        'pkg|web/assets/font.otf': '// some font',
         'pkg|web/assets/font.ttf': '// some font',
         'pkg|web/assets/font.woff': '// some font',
-        'pkg|web/assets/font.otf': '// some font',
+        'pkg|web/assets/image.jpg': '// some jpg',
         'pkg|web/assets/json.json': '// some json',
-        'pkg|lib/assets/json.json': '// some json',
-        'pkg|lib/.DS_Store': '// some dot file',
+        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
+        'pkg|web/main.dart.js': '// some js',
       },
       outputs: {
         'pkg|web/index.html': r'''
@@ -105,13 +106,13 @@ void main() {
         'exclude': ['**/*.txt'],
       })),
       {
-        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
-        'pkg|web/main.dart.js': '// some js',
-        'pkg|web/assets/image.jpg': '// some jpg',
+        'pkg|lib/assets/json.json': '// some json, in lib',
         'pkg|web/assets/font.ttf': '// some font',
+        'pkg|web/assets/image.jpg': '// some jpg',
         'pkg|web/assets/json.json': '// some json',
         'pkg|web/assets/txt.txt': '// some txt',
-        'pkg|lib/assets/json.json': '// some json, in lib',
+        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
+        'pkg|web/main.dart.js': '// some js',
       },
       outputs: {
         'pkg|web/index.html': r'''
@@ -139,14 +140,14 @@ void main() {
         'debug': true,
       })),
       {
-        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
-        'pkg|web/main.dart.js': '// some js',
-        'pkg|web/assets/image.jpg': '// some jpg',
+        'pkg|lib/.DS_Store': '// some "." file',
+        'pkg|lib/assets/json.json': '// some json, in lib',
         'pkg|web/assets/font.ttf': '// some font',
+        'pkg|web/assets/image.jpg': '// some jpg',
         'pkg|web/assets/json.json': '// some json',
         'pkg|web/assets/txt.txt': '// some txt',
-        'pkg|lib/assets/json.json': '// some json, in lib',
-        'pkg|lib/.DS_Store': '// some "." file',
+        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
+        'pkg|web/main.dart.js': '// some js',
       },
       onLog: logEntryies.add,
       outputs: {
@@ -182,13 +183,13 @@ These items where excluded when generating preload tags:
         'include': ['**/*.txt'],
       })),
       {
-        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
-        'pkg|web/main.dart.js': '// some js',
-        'pkg|web/assets/image.jpg': '// some jpg',
+        'pkg|lib/assets/txt.txt': '// some txt, in lib',
         'pkg|web/assets/font.ttf': '// some font',
+        'pkg|web/assets/image.jpg': '// some jpg',
         'pkg|web/assets/json.json': '// some json',
         'pkg|web/assets/txt.txt': '// some txt',
-        'pkg|lib/assets/txt.txt': '// some txt, in lib',
+        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
+        'pkg|web/main.dart.js': '// some js',
       },
       outputs: {
         'pkg|web/index.html': r'''
@@ -211,13 +212,13 @@ These items where excluded when generating preload tags:
         'include': ['**/*.txt', '**/*.txt'],
       })),
       {
-        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
-        'pkg|web/main.dart.js': '// some js',
-        'pkg|web/assets/image.jpg': '// some jpg',
+        'pkg|lib/assets/txt.txt': '// some txt, in lib',
         'pkg|web/assets/font.ttf': '// some font',
+        'pkg|web/assets/image.jpg': '// some jpg',
         'pkg|web/assets/json.json': '// some json',
         'pkg|web/assets/txt.txt': '// some txt',
-        'pkg|lib/assets/txt.txt': '// some txt, in lib',
+        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
+        'pkg|web/main.dart.js': '// some js',
       },
       outputs: {
         'pkg|web/index.html': r'''
@@ -238,6 +239,11 @@ These items where excluded when generating preload tags:
     await testBuilder(
       buildPreload(),
       {
+        'pkg|lib/assets/json.json': '// some json, in lib',
+        'pkg|web/assets/font.ttf': '// some font',
+        'pkg|web/assets/image.jpg': '// some jpg',
+        'pkg|web/assets/json.json': '// some json',
+        'pkg|web/main.dart.js': '// some js',
         'pkg|web/index.template.html': r'''
 <html>
   <head>
@@ -245,11 +251,6 @@ These items where excluded when generating preload tags:
   </head>
 </html>
 ''',
-        'pkg|web/main.dart.js': '// some js',
-        'pkg|web/assets/image.jpg': '// some jpg',
-        'pkg|web/assets/font.ttf': '// some font',
-        'pkg|web/assets/json.json': '// some json',
-        'pkg|lib/assets/json.json': '// some json, in lib',
       },
       outputs: {
         'pkg|web/index.html': r'''

@@ -141,6 +141,7 @@ const _excludeContains = [
 const _excludeEndsWith = [
   '.dart',
   '.dart.bootstrap.js',
+  '.dart.js.tar.gz',
   '.digests',
   '.g.part',
   '.html',
