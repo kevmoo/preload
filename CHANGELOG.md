@@ -1,3 +1,7 @@
+## 1.1.5
+
+- Exclude `*.ddc.*` and `*.digests` files.
+
 ## 1.1.4
 
 - Exclude assets that end with `.dart.js.tar.gz`

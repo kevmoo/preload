@@ -79,7 +79,25 @@ void main() {
         'pkg|web/assets/json.json': '// some json',
         'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
         'pkg|web/main.dart.js': '// some js',
-      },
+      }..addEntries(
+          {
+            'ico',
+            'html',
+            'dart',
+            'dart2js.module',
+            'dartdevc.module',
+            'ddc.js',
+            'ddc.dill',
+            'ddc.module',
+            'dart.bootstrap.js',
+            'dart.js.tar.gz',
+            'module.library',
+            'ng_placeholder',
+            'digests',
+          }.map(
+            (v) => MapEntry('pkg|web/file.$v', '// some $v file'),
+          ),
+        ),
       outputs: {
         'pkg|web/index.html': r'''
 <html>
@@ -171,9 +189,9 @@ void main() {
     expect(logEntryies.single.message, r'''
 These items where excluded when generating preload tags:
   ASSET                   REASON
-  lib/.DS_Store           starts with "."
+  lib/.DS_Store           matches ".*"
   web/assets/txt.txt      excluded by glob "**/*.txt"
-  web/index.template.html ends with ".html"
+  web/index.template.html matches "*.html"
 ''');
   });
 

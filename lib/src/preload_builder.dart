@@ -32,20 +32,9 @@ class PreloadBuilder extends Builder {
     }
 
     Iterable<_PreloadEntry> assetIdToPreloadEntry(AssetId assetId) sync* {
-      if (assetId.pathSegments.last.startsWith('.')) {
-        logSkipReason(assetId, 'starts with "."');
-        return;
-      }
-      for (var excludeEndsWith in _excludeEndsWith) {
-        if (assetId.path.endsWith(excludeEndsWith)) {
-          logSkipReason(assetId, 'ends with "$excludeEndsWith"');
-          return;
-        }
-      }
-
-      for (var excludeContains in _excludeContains) {
-        if (assetId.path.contains(excludeContains)) {
-          logSkipReason(assetId, 'contains "$excludeContains"');
+      for (var excludeGlob in _excludeGlobs) {
+        if (excludeGlob.matches(assetId.pathSegments.last)) {
+          logSkipReason(assetId, 'matches "${excludeGlob.pattern}"');
           return;
         }
       }
@@ -132,23 +121,23 @@ These items where excluded when generating preload tags:
   };
 }
 
-const _excludeContains = [
-  '.dart2js.',
-  '.dartdevc.',
-  '.ddc.js',
-];
+const _excludeGlobStrings = {
+  '*.dart',
+  '*.dart.bootstrap.js',
+  '*.dart.js.*',
+  '*.dart2js.*',
+  '*.dartdevc.*',
+  '*.ddc.*',
+  '*.digests',
+  '*.html',
+  '*.ico',
+  '*.module.*',
+  '*.ng_placeholder',
+  '.*',
+};
 
-const _excludeEndsWith = [
-  '.dart',
-  '.dart.bootstrap.js',
-  '.dart.js.tar.gz',
-  '.digests',
-  '.g.part',
-  '.html',
-  '.ico',
-  '.module.library',
-  '.ng_placeholder',
-];
+final _excludeGlobs =
+    List<Glob>.unmodifiable(_excludeGlobStrings.map((v) => Glob(v)));
 
 String _asValue(String fileName) {
   final extension = p.extension(fileName);
