@@ -71,7 +71,7 @@ void main() {
       {
         'pkg|lib/.DS_Store': '// some dot file',
         'pkg|lib/assets/json.json': '// some json',
-        'pkg|web/"main.dart.js.tar.gz': '// some tar.gz file',
+        'pkg|web/main.dart.js.tar.gz': '// some tar.gz file',
         'pkg|web/assets/font.otf': '// some font',
         'pkg|web/assets/font.ttf': '// some font',
         'pkg|web/assets/font.woff': '// some font',
