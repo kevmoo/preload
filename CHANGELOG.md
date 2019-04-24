@@ -1,3 +1,7 @@
+## 1.1.6
+
+- Support the latest `package:build_config`.
+
 ## 1.1.5
 
 - Exclude `*.ddc.*` and `*.digests` files.
