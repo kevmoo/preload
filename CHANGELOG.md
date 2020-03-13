@@ -1,3 +1,7 @@
+## 1.1.7-dev
+
+- Require at least Dart SDK 2.3.
+
 ## 1.1.6
 
 - Support the latest `package:build_config`.

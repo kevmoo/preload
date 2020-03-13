@@ -44,7 +44,7 @@ class PreloadBuilder extends Builder {
       if (segments[0] == 'web') {
         segments = segments.skip(1).toList();
       } else if (segments[0] == 'lib') {
-        segments = ['packages', assetId.package]..addAll(segments.skip(1));
+        segments = ['packages', assetId.package, ...segments.skip(1)];
       } else {
         throw UnimplementedError('not ready to party on `$segments` yet.');
       }
