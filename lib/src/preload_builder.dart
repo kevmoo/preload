@@ -4,7 +4,7 @@ import 'package:build/build.dart';
 import 'package:glob/glob.dart';
 import 'package:path/path.dart' as p;
 
-const _preloadPlacholder = '<!--PRELOAD-HERE-->';
+const _preloadPlaceholder = '<!--PRELOAD-HERE-->';
 
 class PreloadBuilder extends Builder {
   final List<Glob> includeGlobs;
@@ -12,9 +12,9 @@ class PreloadBuilder extends Builder {
   final bool debug;
 
   PreloadBuilder({
-    Iterable<Glob> excludeGlobs,
-    Iterable<Glob> includeGlobs,
-    bool debug,
+    Iterable<Glob>? excludeGlobs,
+    Iterable<Glob>? includeGlobs,
+    bool? debug,
   })  : debug = debug ?? false,
         excludeGlobs = List<Glob>.unmodifiable(excludeGlobs ?? const <Glob>[]),
         includeGlobs = List<Glob>.unmodifiable(
@@ -22,7 +22,7 @@ class PreloadBuilder extends Builder {
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    List<MapEntry<String, String>> debugLines;
+    List<MapEntry<String, String>>? debugLines;
     if (debug) {
       debugLines = <MapEntry<String, String>>[];
     }
@@ -73,7 +73,7 @@ class PreloadBuilder extends Builder {
     final preloads = preloadSet.toList()..sort();
 
     if (debugLines?.isNotEmpty ?? false) {
-      final longest = debugLines.fold<int>(0, (longest, value) {
+      final longest = debugLines!.fold<int>(0, (longest, value) {
         if (value.key.length > longest) {
           longest = value.key.length;
         }
@@ -96,7 +96,7 @@ These items where excluded when generating preload tags:
     final templateContent = await buildStep.readAsString(buildStep.inputId);
 
     final outputContent = templateContent.replaceFirstMapped(
-      RegExp('([\\t ]*)(${RegExp.escape(_preloadPlacholder)})'),
+      RegExp('([\\t ]*)(${RegExp.escape(_preloadPlaceholder)})'),
       (match) {
         final indent = match[1];
         return preloads.map((e) => '$indent$e').join('\n');

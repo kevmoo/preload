@@ -1,5 +1,4 @@
-![Pub](https://img.shields.io/pub/v/preload.svg)
-[![Build Status](https://travis-ci.org/kevmoo/preload.svg?branch=master)](https://travis-ci.org/kevmoo/preload)
+[![Pub](https://img.shields.io/pub/v/preload.svg)](https://pub.dev/packages/preload)
 
 1. Add `preload` to `dev_dependencies` in `pubspec.yaml`.
    You should already have a dependency on `build_runner`.

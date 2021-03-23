@@ -151,7 +151,7 @@ void main() {
   });
 
   test('with debug enabled in options', () async {
-    final logEntryies = <LogRecord>[];
+    final logEntries = <LogRecord>[];
     await testBuilder(
       buildPreload(const BuilderOptions({
         'exclude': ['**/*.txt'],
@@ -167,7 +167,7 @@ void main() {
         'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
         'pkg|web/main.dart.js': '// some js',
       },
-      onLog: logEntryies.add,
+      onLog: logEntries.add,
       outputs: {
         'pkg|web/index.html': r'''
 <html>
@@ -185,8 +185,8 @@ void main() {
       },
     );
 
-    expect(logEntryies, hasLength(1));
-    expect(logEntryies.single.message, r'''
+    expect(logEntries, hasLength(1));
+    expect(logEntries.single.message, r'''
 These items where excluded when generating preload tags:
   ASSET                   REASON
   lib/.DS_Store           matches ".*"
