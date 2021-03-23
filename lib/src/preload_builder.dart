@@ -12,9 +12,9 @@ class PreloadBuilder extends Builder {
   final bool debug;
 
   PreloadBuilder({
-    Iterable<Glob> excludeGlobs,
-    Iterable<Glob> includeGlobs,
-    bool debug,
+    Iterable<Glob>? excludeGlobs,
+    Iterable<Glob>? includeGlobs,
+    bool? debug,
   })  : debug = debug ?? false,
         excludeGlobs = List<Glob>.unmodifiable(excludeGlobs ?? const <Glob>[]),
         includeGlobs = List<Glob>.unmodifiable(
@@ -22,7 +22,7 @@ class PreloadBuilder extends Builder {
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    List<MapEntry<String, String>> debugLines;
+    List<MapEntry<String, String>>? debugLines;
     if (debug) {
       debugLines = <MapEntry<String, String>>[];
     }
@@ -73,7 +73,7 @@ class PreloadBuilder extends Builder {
     final preloads = preloadSet.toList()..sort();
 
     if (debugLines?.isNotEmpty ?? false) {
-      final longest = debugLines.fold<int>(0, (longest, value) {
+      final longest = debugLines!.fold<int>(0, (longest, value) {
         if (value.key.length > longest) {
           longest = value.key.length;
         }

@@ -12,10 +12,10 @@ import 'package:glob/glob.dart';
 
 import 'src/preload_builder.dart';
 
-Builder buildPreload([BuilderOptions options]) {
+Builder buildPreload([BuilderOptions? options]) {
   options ??= const BuilderOptions({});
 
-  List<Glob> excludes;
+  List<Glob>? excludes;
   if (options.config.containsKey('exclude')) {
     excludes = (options.config['exclude'] as List)
         .cast<String>()
@@ -23,7 +23,7 @@ Builder buildPreload([BuilderOptions options]) {
         .toList();
   }
 
-  List<Glob> includes;
+  List<Glob>? includes;
   if (options.config.containsKey('include')) {
     includes = (options.config['include'] as List)
         .cast<String>()
@@ -31,7 +31,7 @@ Builder buildPreload([BuilderOptions options]) {
         .toList();
   }
 
-  bool debug;
+  bool? debug;
   if (options.config.containsKey('debug')) {
     debug = options.config['debug'] as bool;
   }
