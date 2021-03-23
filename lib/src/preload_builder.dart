@@ -4,7 +4,7 @@ import 'package:build/build.dart';
 import 'package:glob/glob.dart';
 import 'package:path/path.dart' as p;
 
-const _preloadPlacholder = '<!--PRELOAD-HERE-->';
+const _preloadPlaceholder = '<!--PRELOAD-HERE-->';
 
 class PreloadBuilder extends Builder {
   final List<Glob> includeGlobs;
@@ -96,7 +96,7 @@ These items where excluded when generating preload tags:
     final templateContent = await buildStep.readAsString(buildStep.inputId);
 
     final outputContent = templateContent.replaceFirstMapped(
-      RegExp('([\\t ]*)(${RegExp.escape(_preloadPlacholder)})'),
+      RegExp('([\\t ]*)(${RegExp.escape(_preloadPlaceholder)})'),
       (match) {
         final indent = match[1];
         return preloads.map((e) => '$indent$e').join('\n');

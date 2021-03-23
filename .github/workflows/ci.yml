@@ -43,7 +43,6 @@ jobs:
     needs: analyze
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
         # Add macos-latest and/or windows-latest if relevant for this package.
         os: [ubuntu-latest]
@@ -53,13 +52,5 @@ jobs:
       - uses: dart-lang/setup-dart@v1.0
         with:
           sdk: ${{ matrix.sdk }}
-      - id: install
-        run: dart pub get
-      - name: make git happy
-        run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-      - run: dart test -x presubmit-only
-        if: always() && steps.install.outcome == 'success'
-      - run: dart test --run-skipped -t presubmit-only
-        if: always() && steps.install.outcome == 'success'
+      - run: dart pub get
+      - run: dart test
