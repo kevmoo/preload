@@ -18,7 +18,8 @@ class PreloadBuilder extends Builder {
   })  : debug = debug ?? false,
         excludeGlobs = List<Glob>.unmodifiable(excludeGlobs ?? const <Glob>[]),
         includeGlobs = List<Glob>.unmodifiable(
-            includeGlobs ?? <Glob>[Glob('web/**'), Glob('lib/**')]);
+          includeGlobs ?? <Glob>[Glob('web/**'), Glob('lib/**')],
+        );
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
@@ -86,11 +87,13 @@ class PreloadBuilder extends Builder {
           .map((e) => '${e.key.padRight(longest)} ${e.value}')
           .join('\n  ');
 
-      log.warning('''
+      log.warning(
+        '''
 These items where excluded when generating preload tags:
   ${"ASSET".padRight(longest)} REASON
   $linesString
-''');
+''',
+      );
     }
 
     final templateContent = await buildStep.readAsString(buildStep.inputId);

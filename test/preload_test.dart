@@ -13,23 +13,31 @@ void main() {
       expect(builder.debug, isFalse);
       expect(builder.excludeGlobs, isEmpty);
       expect(builder.includeGlobs, hasLength(2));
-      expect(builder.includeGlobs,
-          contains(isA<Glob>().having((e) => e.pattern, 'pattern', 'web/**')));
-      expect(builder.includeGlobs,
-          contains(isA<Glob>().having((e) => e.pattern, 'pattern', 'lib/**')));
+      expect(
+        builder.includeGlobs,
+        contains(isA<Glob>().having((e) => e.pattern, 'pattern', 'web/**')),
+      );
+      expect(
+        builder.includeGlobs,
+        contains(isA<Glob>().having((e) => e.pattern, 'pattern', 'lib/**')),
+      );
     });
 
     test('configured', () {
-      final builder = buildPreload(const BuilderOptions({
-        'debug': true,
-        'exclude': ['foo.js'],
-        'include': [],
-      })) as PreloadBuilder;
+      final builder = buildPreload(
+        const BuilderOptions({
+          'debug': true,
+          'exclude': ['foo.js'],
+          'include': [],
+        }),
+      ) as PreloadBuilder;
       expect(builder.debug, isTrue);
       expect(builder.includeGlobs, isEmpty);
       expect(builder.excludeGlobs, hasLength(1));
-      expect(builder.excludeGlobs.single,
-          isA<Glob>().having((e) => e.pattern, 'pattern', 'foo.js'));
+      expect(
+        builder.excludeGlobs.single,
+        isA<Glob>().having((e) => e.pattern, 'pattern', 'foo.js'),
+      );
     });
   });
 
@@ -120,9 +128,11 @@ void main() {
 
   test('with excludes', () async {
     await testBuilder(
-      buildPreload(const BuilderOptions({
-        'exclude': ['**/*.txt'],
-      })),
+      buildPreload(
+        const BuilderOptions({
+          'exclude': ['**/*.txt'],
+        }),
+      ),
       {
         'pkg|lib/assets/json.json': '// some json, in lib',
         'pkg|web/assets/font.ttf': '// some font',
@@ -153,10 +163,12 @@ void main() {
   test('with debug enabled in options', () async {
     final logEntries = <LogRecord>[];
     await testBuilder(
-      buildPreload(const BuilderOptions({
-        'exclude': ['**/*.txt'],
-        'debug': true,
-      })),
+      buildPreload(
+        const BuilderOptions({
+          'exclude': ['**/*.txt'],
+          'debug': true,
+        }),
+      ),
       {
         'pkg|lib/.DS_Store': '// some "." file',
         'pkg|lib/assets/json.json': '// some json, in lib',
@@ -186,20 +198,25 @@ void main() {
     );
 
     expect(logEntries, hasLength(1));
-    expect(logEntries.single.message, r'''
+    expect(
+      logEntries.single.message,
+      r'''
 These items where excluded when generating preload tags:
   ASSET                   REASON
   lib/.DS_Store           matches ".*"
   web/assets/txt.txt      excluded by glob "**/*.txt"
   web/index.template.html matches "*.html"
-''');
+''',
+    );
   });
 
   test('with includes', () async {
     await testBuilder(
-      buildPreload(const BuilderOptions({
-        'include': ['**/*.txt'],
-      })),
+      buildPreload(
+        const BuilderOptions({
+          'include': ['**/*.txt'],
+        }),
+      ),
       {
         'pkg|lib/assets/txt.txt': '// some txt, in lib',
         'pkg|web/assets/font.ttf': '// some font',
@@ -226,9 +243,11 @@ These items where excluded when generating preload tags:
 
   test('overlapping includes should not duplicate tags', () async {
     await testBuilder(
-      buildPreload(const BuilderOptions({
-        'include': ['**/*.txt', '**/*.txt'],
-      })),
+      buildPreload(
+        const BuilderOptions({
+          'include': ['**/*.txt', '**/*.txt'],
+        }),
+      ),
       {
         'pkg|lib/assets/txt.txt': '// some txt, in lib',
         'pkg|web/assets/font.ttf': '// some font',
