@@ -1,3 +1,7 @@
+## 2.0.1-dev
+
+- Require Dart SDK 2.18
+
 ## 2.0.0
 
 - Require at least Dart SDK `2.7.0`.
