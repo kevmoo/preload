@@ -140,7 +140,7 @@ const _excludeGlobStrings = {
 };
 
 final _excludeGlobs =
-    List<Glob>.unmodifiable(_excludeGlobStrings.map((v) => Glob(v)));
+    List<Glob>.unmodifiable(_excludeGlobStrings.map(Glob.new));
 
 String _asValue(String fileName) {
   final extension = p.extension(fileName);
