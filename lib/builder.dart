@@ -19,7 +19,7 @@ Builder buildPreload([BuilderOptions? options]) {
   if (options.config.containsKey('exclude')) {
     excludes = (options.config['exclude'] as List)
         .cast<String>()
-        .map((v) => Glob(v))
+        .map(Glob.new)
         .toList();
   }
 
@@ -27,7 +27,7 @@ Builder buildPreload([BuilderOptions? options]) {
   if (options.config.containsKey('include')) {
     includes = (options.config['include'] as List)
         .cast<String>()
-        .map((v) => Glob(v))
+        .map(Glob.new)
         .toList();
   }
 

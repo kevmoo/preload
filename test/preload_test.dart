@@ -28,7 +28,7 @@ void main() {
         const BuilderOptions({
           'debug': true,
           'exclude': ['foo.js'],
-          'include': [],
+          'include': <String>[],
         }),
       ) as PreloadBuilder;
       expect(builder.debug, isTrue);
