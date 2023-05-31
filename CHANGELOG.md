@@ -1,6 +1,6 @@
 ## 2.0.1-dev
 
-- Require Dart SDK 2.18
+- Require Dart SDK 2.19
 
 ## 2.0.0
 
