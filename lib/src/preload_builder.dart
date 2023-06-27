@@ -120,7 +120,7 @@ These items where excluded when generating preload tags:
 
   @override
   final buildExtensions = const {
-    r'web/index.template.html': ['web/index.html']
+    r'web/index.template.html': ['web/index.html'],
   };
 }
 
