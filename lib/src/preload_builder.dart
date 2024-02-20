@@ -142,19 +142,11 @@ const _excludeGlobStrings = {
 final _excludeGlobs =
     List<Glob>.unmodifiable(_excludeGlobStrings.map(Glob.new));
 
-String _asValue(String fileName) {
-  final extension = p.extension(fileName);
-  switch (extension) {
-    case '.js':
-      return 'script';
-    case '.otf':
-    case '.ttf':
-    case '.woff':
-      return 'font';
-    default:
-      return 'fetch';
-  }
-}
+String _asValue(String fileName) => switch (p.extension(fileName)) {
+      '.js' => 'script',
+      '.otf' || '.ttf' || '.woff' => 'font',
+      _ => 'fetch'
+    };
 
 class _PreloadEntry implements Comparable<_PreloadEntry> {
   final String href;
