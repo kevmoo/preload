@@ -24,4 +24,5 @@ linter:
     - prefer_final_locals
     - require_trailing_commas
     - unnecessary_await_in_return
+    - use_null_aware_elements
     - use_string_buffers
