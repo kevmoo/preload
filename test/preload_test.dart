@@ -197,10 +197,13 @@ void main() {
       },
     );
 
+    logEntries.removeWhere((e) => e.level == Level.INFO);
+
     expect(logEntries, hasLength(1));
     expect(
       logEntries.single.message,
       r'''
+PreloadBuilder on web/index.template.html:
 These items where excluded when generating preload tags:
   ASSET                   REASON
   lib/.DS_Store           matches ".*"
