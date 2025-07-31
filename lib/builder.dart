@@ -17,18 +17,20 @@ Builder buildPreload([BuilderOptions? options]) {
 
   List<Glob>? excludes;
   if (options.config.containsKey('exclude')) {
-    excludes = (options.config['exclude'] as List)
-        .cast<String>()
-        .map(Glob.new)
-        .toList();
+    excludes =
+        (options.config['exclude'] as List)
+            .cast<String>()
+            .map(Glob.new)
+            .toList();
   }
 
   List<Glob>? includes;
   if (options.config.containsKey('include')) {
-    includes = (options.config['include'] as List)
-        .cast<String>()
-        .map(Glob.new)
-        .toList();
+    includes =
+        (options.config['include'] as List)
+            .cast<String>()
+            .map(Glob.new)
+            .toList();
   }
 
   bool? debug;

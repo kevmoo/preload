@@ -24,13 +24,15 @@ void main() {
     });
 
     test('configured', () {
-      final builder = buildPreload(
-        const BuilderOptions({
-          'debug': true,
-          'exclude': ['foo.js'],
-          'include': <String>[],
-        }),
-      ) as PreloadBuilder;
+      final builder =
+          buildPreload(
+                const BuilderOptions({
+                  'debug': true,
+                  'exclude': ['foo.js'],
+                  'include': <String>[],
+                }),
+              )
+              as PreloadBuilder;
       expect(builder.debug, isTrue);
       expect(builder.includeGlobs, isEmpty);
       expect(builder.excludeGlobs, hasLength(1));
@@ -44,21 +46,15 @@ void main() {
   test('no template section', () async {
     await testBuilder(
       buildPreload(),
-      {
-        'pkg|web/index.template.html': _emptyHtmlInput,
-      },
-      outputs: {
-        'pkg|web/index.html': _emptyHtmlInput,
-      },
+      {'pkg|web/index.template.html': _emptyHtmlInput},
+      outputs: {'pkg|web/index.html': _emptyHtmlInput},
     );
   });
 
   test('no template section', () async {
     await testBuilder(
       buildPreload(),
-      {
-        'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
-      },
+      {'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder},
       outputs: {
         'pkg|web/index.html': r'''
 <html>
@@ -88,24 +84,22 @@ void main() {
         'pkg|web/index.template.html': _htmlInputWithPreloadPlaceholder,
         'pkg|web/main.dart.js': '// some js',
       }..addEntries(
-          {
-            'ico',
-            'html',
-            'dart',
-            'dart2js.module',
-            'dartdevc.module',
-            'ddc.js',
-            'ddc.dill',
-            'ddc.module',
-            'dart.bootstrap.js',
-            'dart.js.tar.gz',
-            'module.library',
-            'ng_placeholder',
-            'digests',
-          }.map(
-            (v) => MapEntry('pkg|web/file.$v', '// some $v file'),
-          ),
-        ),
+        {
+          'ico',
+          'html',
+          'dart',
+          'dart2js.module',
+          'dartdevc.module',
+          'ddc.js',
+          'ddc.dill',
+          'ddc.module',
+          'dart.bootstrap.js',
+          'dart.js.tar.gz',
+          'module.library',
+          'ng_placeholder',
+          'digests',
+        }.map((v) => MapEntry('pkg|web/file.$v', '// some $v file')),
+      ),
       outputs: {
         'pkg|web/index.html': r'''
 <html>
@@ -200,17 +194,14 @@ void main() {
     logEntries.removeWhere((e) => e.level == Level.INFO);
 
     expect(logEntries, hasLength(1));
-    expect(
-      logEntries.single.message,
-      r'''
+    expect(logEntries.single.message, r'''
 PreloadBuilder on web/index.template.html:
 These items where excluded when generating preload tags:
   ASSET                   REASON
   lib/.DS_Store           matches ".*"
   web/assets/txt.txt      excluded by glob "**/*.txt"
   web/index.template.html matches "*.html"
-''',
-    );
+''');
   });
 
   test('with includes', () async {
