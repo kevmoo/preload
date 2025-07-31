@@ -15,11 +15,11 @@ class PreloadBuilder extends Builder {
     Iterable<Glob>? excludeGlobs,
     Iterable<Glob>? includeGlobs,
     bool? debug,
-  })  : debug = debug ?? false,
-        excludeGlobs = List<Glob>.unmodifiable(excludeGlobs ?? const <Glob>[]),
-        includeGlobs = List<Glob>.unmodifiable(
-          includeGlobs ?? <Glob>[Glob('web/**'), Glob('lib/**')],
-        );
+  }) : debug = debug ?? false,
+       excludeGlobs = List<Glob>.unmodifiable(excludeGlobs ?? const <Glob>[]),
+       includeGlobs = List<Glob>.unmodifiable(
+         includeGlobs ?? <Glob>[Glob('web/**'), Glob('lib/**')],
+       );
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
@@ -87,13 +87,11 @@ class PreloadBuilder extends Builder {
           .map((e) => '${e.key.padRight(longest)} ${e.value}')
           .join('\n  ');
 
-      log.warning(
-        '''
+      log.warning('''
 These items where excluded when generating preload tags:
   ${"ASSET".padRight(longest)} REASON
   $linesString
-''',
-      );
+''');
     }
 
     final templateContent = await buildStep.readAsString(buildStep.inputId);
@@ -112,10 +110,7 @@ These items where excluded when generating preload tags:
       buildStep.inputId.path.replaceAll('.template.html', '.html'),
     );
 
-    await buildStep.writeAsString(
-      newAssetId,
-      outputContent,
-    );
+    await buildStep.writeAsString(newAssetId, outputContent);
   }
 
   @override
@@ -139,14 +134,15 @@ const _excludeGlobStrings = {
   '.*',
 };
 
-final _excludeGlobs =
-    List<Glob>.unmodifiable(_excludeGlobStrings.map(Glob.new));
+final _excludeGlobs = List<Glob>.unmodifiable(
+  _excludeGlobStrings.map(Glob.new),
+);
 
 String _asValue(String fileName) => switch (p.extension(fileName)) {
-      '.js' => 'script',
-      '.otf' || '.ttf' || '.woff' => 'font',
-      _ => 'fetch'
-    };
+  '.js' => 'script',
+  '.otf' || '.ttf' || '.woff' => 'font',
+  _ => 'fetch',
+};
 
 class _PreloadEntry implements Comparable<_PreloadEntry> {
   final String href;
