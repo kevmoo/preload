@@ -2,7 +2,7 @@ import 'package:build/build.dart';
 import 'package:build_test/build_test.dart';
 import 'package:glob/glob.dart';
 import 'package:logging/logging.dart';
-import 'package:preload/builder.dart';
+import 'package:preload/preload.dart';
 import 'package:preload/src/preload_builder.dart';
 import 'package:test/test.dart';
 

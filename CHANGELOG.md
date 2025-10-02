@@ -1,3 +1,10 @@
+## 2.1.0
+
+- Require `build: ^4.0.0`.
+- Require Dart SDK 3.9
+- Added `preload.dart`. Deprecated `builder.dart`.
+  Moving beyond this convention.
+
 ## 2.0.1
 
 - Require `build: ^3.0.0`.

@@ -1,7 +1,7 @@
 # Read about `build.yaml` at https://pub.dev/packages/build_config
 builders:
   preload:
-    import: "package:preload/builder.dart"
+    import: "package:preload/preload.dart"
     builder_factories: ["buildPreload"]
     build_extensions: {"web/index.template.html": ["web/index.html"]}
     build_to: source
