@@ -1,3 +1,8 @@
+## 2.0.2
+
+- Require `build: ^4.0.0`.
+- Require Dart SDK 3.9
+
 ## 2.0.1
 
 - Require `build: ^3.0.0`.
